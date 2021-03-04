@@ -10,8 +10,9 @@ import ListAppointments from './ListAppointments';
 
 const App = () => {
   const [appointments, setAppointments] = useState([]);
-  const [formDisplay, setFormDisplay] = useState(true);
- 
+  const [formDisplay, setFormDisplay] = useState(false);
+  const [orderBy, setOrderBy] = useState('petName')
+  const [orderDir, setOrderDir] = useState('asc')
   
   useEffect(() => {
     const fetchData = async () => {
@@ -35,8 +36,25 @@ const App = () => {
     let tempApt = appointments;
     tempApt.unshift(apt);
     setAppointments(tempApt);
-
   }
+
+  let order;
+  let filteredAppointments = appointments;
+  if(orderDir === 'asc') {
+    order = 1;
+  }
+  else {
+    order = -1
+  };
+
+  filteredAppointments.sort((a,b) => {
+    if(a[orderBy].toLowerCase() < b[orderBy].toLowerCase()) {
+      return -1 * order;
+    }
+    else {
+      return 1 * order;
+    }
+  })
 
     return (
       <main className="page bg-white" id="petratings">
@@ -49,11 +67,11 @@ const App = () => {
                   toggleForm={toggleForm}
                   addAppointment={addAppointment}
                 />
+                <SearchAppointments />
                 <ListAppointments 
-                  appointments={appointments}
+                  appointments={filteredAppointments}
                   deleteAppointment={deleteAppointment}
                 />
-                <SearchAppointments />
               </div>
             </div>
           </div>
