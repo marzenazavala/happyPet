@@ -56,6 +56,11 @@ const App = () => {
     }
   })
 
+  const changeOrder = (orderBy, orderDir) => {
+    setOrderBy(orderBy);
+    setOrderDir(orderDir);
+  }
+
     return (
       <main className="page bg-white" id="petratings">
         <div className="container">
@@ -67,7 +72,11 @@ const App = () => {
                   toggleForm={toggleForm}
                   addAppointment={addAppointment}
                 />
-                <SearchAppointments />
+                <SearchAppointments 
+                  orderBy={orderBy}
+                  orderDir={orderDir}
+                  changeOrder={changeOrder}
+                />
                 <ListAppointments 
                   appointments={filteredAppointments}
                   deleteAppointment={deleteAppointment}

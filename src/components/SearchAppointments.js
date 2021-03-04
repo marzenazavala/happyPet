@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchAppointments = () => {
+const SearchAppointments = ({orderBy, orderDir, changeOrder}) => {
   
     return (
       <div className="search-appointments row justify-content-center my-4">
@@ -24,20 +24,40 @@ const SearchAppointments = () => {
             </button>
 
             <div className="sort-menu dropdown-menu dropdown-menu-right">
-              <button className="sort-by dropdown-item" href="#">
+              <button 
+                className={`sort-by dropdown-item ${orderBy === 'petName' ? 'active' : ''}`} 
+                href="#"
+                onClick={() => changeOrder('petName', orderDir)}
+              >
                 Pet Name
               </button>
-              <button className="sort-by dropdown-item" href="#">
+              <button 
+                className={`sort-by dropdown-item ${orderBy === 'aptDate' ? 'active' : ''}`} 
+                href="#"
+                onClick={() => changeOrder('aptDate', orderDir)}
+              >
                 Date
               </button>
-              <button className="sort-by dropdown-item" href="#">
+              <button 
+                className={`sort-by dropdown-item ${orderBy === 'ownerName' ? 'active' : ''}`} 
+                href="#"
+                onClick={() => changeOrder('ownerName', orderDir)}
+              >
                 Owner
               </button>
               <div role="separator" className="dropdown-divider" />
-              <button className="sort-by dropdown-item" href="#">
+              <button 
+                className={`sort-by dropdown-item ${orderDir === 'asc' ? 'active' : ''}`} 
+                href="#"
+                onClick={() => changeOrder(orderBy, 'asc')}
+              >
                 Asc
               </button>
-              <button className="sort-by dropdown-item" href="#">
+              <button 
+                className={`sort-by dropdown-item ${orderDir === 'desc' ? 'active' : ''}`} 
+                href="#"
+                onClick={() => changeOrder(orderBy, 'desc')}
+              >
                 Desc
               </button>
             </div>
