@@ -2,7 +2,7 @@ import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 import Moment from 'react-moment';
 
-const ListAppointments = ({appointments}) => {
+const ListAppointments = ({appointments, deleteAppointment}) => {
     return (
       <div className="appointment-list item-list mb-3">
         {appointments.map(item => (
@@ -29,7 +29,7 @@ const ListAppointments = ({appointments}) => {
               </div>
             </div>
             <div className="ml-4 mt-4">
-              <button className="pet-delete btn btn-sm btn-danger">
+              <button onClick={() => {deleteAppointment(item)}} className="pet-delete btn btn-sm btn-danger">
                 <FaTimes />
               </button>
             </div>
