@@ -11,8 +11,9 @@ import ListAppointments from './ListAppointments';
 const App = () => {
   const [appointments, setAppointments] = useState([]);
   const [formDisplay, setFormDisplay] = useState(false);
-  const [orderBy, setOrderBy] = useState('petName')
-  const [orderDir, setOrderDir] = useState('asc')
+  const [orderBy, setOrderBy] = useState('petName');
+  const [orderDir, setOrderDir] = useState('asc');
+  const [searchQuery, setSearchQuery] = useState('');
   
   useEffect(() => {
     const fetchData = async () => {
@@ -26,17 +27,17 @@ const App = () => {
     let tempApt = appointments;
     tempApt = without(appointments, aptm);
     setAppointments(tempApt);
-  }
+  };
 
   const toggleForm = () => {
     setFormDisplay(!formDisplay)
-  }
+  };
 
   const addAppointment = (apt) => {
     let tempApt = appointments;
     tempApt.unshift(apt);
     setAppointments(tempApt);
-  }
+  };
 
   let order;
   let filteredAppointments = appointments;
@@ -47,19 +48,36 @@ const App = () => {
     order = -1
   };
 
-  filteredAppointments.sort((a,b) => {
+  filteredAppointments = filteredAppointments.sort((a,b) => {
     if(a[orderBy].toLowerCase() < b[orderBy].toLowerCase()) {
       return -1 * order;
     }
     else {
       return 1 * order;
     }
-  })
+  }).filter(eachItem => {
+    return(
+      eachItem['petName']
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()) ||
+      eachItem['ownerName']
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()) ||
+      eachItem['aptNotes']
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+    )
+  });
 
   const changeOrder = (orderBy, orderDir) => {
     setOrderBy(orderBy);
     setOrderDir(orderDir);
-  }
+  };
+
+  const searchApts = (value) => {
+    setSearchQuery(value);
+  };
+
 
     return (
       <main className="page bg-white" id="petratings">
@@ -76,6 +94,7 @@ const App = () => {
                   orderBy={orderBy}
                   orderDir={orderDir}
                   changeOrder={changeOrder}
+                  searchApts={searchApts}
                 />
                 <ListAppointments 
                   appointments={filteredAppointments}

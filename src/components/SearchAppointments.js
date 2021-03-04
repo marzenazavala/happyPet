@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchAppointments = ({orderBy, orderDir, changeOrder}) => {
+const SearchAppointments = ({orderBy, orderDir, changeOrder, searchApts}) => {
   
     return (
       <div className="search-appointments row justify-content-center my-4">
@@ -11,6 +11,8 @@ const SearchAppointments = ({orderBy, orderDir, changeOrder}) => {
             type="text"
             className="form-control"
             aria-label="Search Appointments"
+            placeholder="Search"
+            onChange={e => searchApts(e.target.value)}
           />
           <div className="input-group-append">
             <button
