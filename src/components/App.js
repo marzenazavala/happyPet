@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import '../css/App.css';
-import { without } from 'lodash';
+import { without, findIndex } from 'lodash';
+import axios from 'axios';
 
 import AddAppointment from './AddAppointment';
 import SearchAppointments from './SearchAppointments';
@@ -14,14 +14,22 @@ const App = () => {
   const [orderBy, setOrderBy] = useState('petName');
   const [orderDir, setOrderDir] = useState('asc');
   const [searchQuery, setSearchQuery] = useState('');
+  const [lastIndex, setLastIndex] = useState(0);
   
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios('/data.json');
-      setAppointments(result.data)
-    };
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    const response = await axios('/data.json')
+    const appointments = await response.data;
+    let currentIndex = lastIndex
+      appointments.forEach(item=>{
+        item.aptId = ++currentIndex
+      })
+      setAppointments(appointments)
+      setLastIndex(currentIndex)
+    };
 
   const deleteAppointment = (aptm) => {
     let tempApt = appointments;
@@ -78,6 +86,15 @@ const App = () => {
     setSearchQuery(value);
   };
 
+  const updateItem = (name, value, id) => {
+    let tempApt = appointments;
+    let aptIndex = findIndex(appointments, {
+      aptId: id
+    });
+    tempApt[aptIndex][name] = value;
+    setAppointments(tempApt)
+  };
+
 
     return (
       <main className="page bg-white" id="petratings">
@@ -99,6 +116,7 @@ const App = () => {
                 <ListAppointments 
                   appointments={filteredAppointments}
                   deleteAppointment={deleteAppointment}
+                  updateItem={updateItem}
                 />
               </div>
             </div>
